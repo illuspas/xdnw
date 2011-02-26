@@ -115,9 +115,10 @@ void Widget::sl_about()
 {
     QMessageBox::information(this, tr("About Xdnw"),
                        tr("<h2>Xdnw 0.4</h2>"
-                          "<p>dnw for Linux."
+                          "<p>dnw for Linux"
                           "<br />You must have super user privileges to run it."
-                          "<p>Copyright &copy; 2009-2011 illuspas@gmail.com"
+                          "<br />Copyright &copy; 2009-2011 illuspas@gmail.com"
+                          "<br /><a href='http://code.google.com/p/xdnw/'>http://code.google.com/p/xdnw/</a></p>"
                           ));
 
 }
