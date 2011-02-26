@@ -30,8 +30,8 @@ struct usb_dev_handle * Dnw::open_port()
 {
     if (hdev != NULL)
     {
-        usb_close(hdev);
         usb_release_interface(hdev,0);
+        usb_close(hdev);
     }
     usb_init();
     usb_find_busses();
