@@ -8,6 +8,8 @@
 #include <QMessageBox>
 #include <QInputDialog>
 #include "dnw.h"
+#include <QtXml/QDomDocument>
+
 
 namespace Ui {
     class Widget;
@@ -27,6 +29,7 @@ public:
     u_int32_t down_addr;
 private:
     Ui::Widget *ui;
+QDomDocument *doc;
 
 public slots:
     void sl_OpenFile();
@@ -34,6 +37,8 @@ public slots:
     void sl_OpenState(int);
     void sl_about();
     void sl_setDownAddr();
+private slots:
+    void on_cb_model_currentIndexChanged(const QString &arg1);
 };
 
 #endif // WIDGET_H

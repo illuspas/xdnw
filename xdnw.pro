@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
-
+QT+=xml
 TARGET = xdnw
 TEMPLATE = app
 

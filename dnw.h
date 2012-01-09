@@ -10,14 +10,16 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#define IDVENDOR    0x5345
-#define IDPRODUCT   0x1234
+//#define IDVENDOR    0x04e8
+//#define IDPRODUCT   0x1234
 
 #define DEVFOUND    0
 #define DEVNOFOUND  1
 #define OPENERROR   2
 #define ALLREADY    3
 #define CLAIMERR    4
+
+extern  u_int32_t IDVENDOR,IDPRODUCT;
 
 class Dnw : public QObject
 {
