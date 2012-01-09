@@ -1,24 +1,60 @@
 #include "widget.h"
 #include "ui_widget.h"
 
+
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Widget)
 {
     ui->setupUi(this);
+
     dnw = new Dnw;
-    down_addr = 0xC0000000;
-    ui->label_downaddr_v->setText("0x" + QString::number(down_addr,16));
+    doc=new QDomDocument;
+ //   down_addr = 0x57e00000 ;
+//    ui->label_downaddr_v->setText("0x" + QString::number(down_addr,16));
+    ui->label_downaddr_v->setText("");
     connect(dnw, SIGNAL(si_OpenState(int)), this, SLOT(sl_OpenState(int)));
     connect(ui->pbn_open,SIGNAL(clicked()),this,SLOT(sl_OpenFile()));
     connect(ui->pbn_write,SIGNAL(clicked()),this,SLOT(sl_StartWrite()));
     connect(ui->pbn_set,SIGNAL(clicked()),this,SLOT(sl_setDownAddr()));
     connect(ui->pbn_about, SIGNAL(clicked()), this, SLOT(sl_about()));
+
+   ui->cb_model->clear();
+ QFile file("config.xml");   //建立指向“my.xml”文件的QFile对象
+
+   if (file.open(QIODevice::ReadWrite))
+{
+//将文件内容读到doc中
+       if (!doc->setContent(&file))  {
+           file.close();
+           return;
+       }
+
+
+   file.close();
+   //关闭文件
+   QDomElement root=doc->documentElement();
+   if (root.tagName()=="groups")
+   {
+       QDomNode child=root.firstChild();
+       while (!child.isNull())
+       {
+           if (child.toElement().tagName()=="item")
+           {
+               ui->cb_model->addItem(child.toElement().attribute("name"));
+           }
+           child=child.nextSibling();
+       }
+   }
+   }
+
 }
 
 Widget::~Widget()
 {
+delete doc;
     delete ui;
+
 }
 
 void Widget::sl_OpenFile()
@@ -114,7 +150,7 @@ void Widget::sl_OpenState(int state)
 void Widget::sl_about()
 {
     QMessageBox::information(this, tr("About Xdnw"),
-                       tr("<h2>Xdnw 0.4</h2>"
+                       tr("<h2>Xdnw 0.5</h2>"
                           "<p>dnw for Linux"
                           "<br />You must have super user privileges to run it."
                           "<br />Copyright &copy; 2009-2011 illuspas@gmail.com"
@@ -134,6 +170,34 @@ void Widget::sl_setDownAddr()
         *((u_int32_t*)write_buf) = down_addr;
         ui->label_downaddr_v->setText("0x"+QString::number(down_addr,16));
 
+
     }
 
+}
+
+
+
+void Widget::on_cb_model_currentIndexChanged(const QString &arg1)
+{
+    QDomElement root=doc->documentElement();
+    if (root.tagName()=="groups")
+    {
+        QDomNode child=root.firstChild();
+        while (!child.isNull())
+        {
+            if (child.toElement().tagName()=="item")
+            {
+                if (child.toElement().attribute("name")==arg1)
+                {
+                             down_addr =child.toElement().attribute("down_addr").toUInt(NULL,16);
+                       ui->label_downaddr_v->setText("0x" + QString::number(down_addr,16));
+
+                       IDVENDOR=child.toElement().attribute("IDVENDOR").toUInt(NULL,16);
+IDPRODUCT=child.toElement().attribute("IDPRODUCT").toUInt(NULL,16);
+                    break;
+                }
+            }
+            child=child.nextSibling();
+        }
+    }
 }

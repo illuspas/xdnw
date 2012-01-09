@@ -1,5 +1,7 @@
 #include "dnw.h"
 
+ u_int32_t IDVENDOR,IDPRODUCT;
+
 Dnw::Dnw(QObject *parent) :
     QObject(parent)
 {
