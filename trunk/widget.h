@@ -9,6 +9,7 @@
 #include <QInputDialog>
 #include "dnw.h"
 #include <QtXml/QDomDocument>
+#include "modelsetup.h"
 
 
 namespace Ui {
@@ -30,6 +31,7 @@ public:
 private:
     Ui::Widget *ui;
 QDomDocument *doc;
+ModelSetup mo;
 
 public slots:
     void sl_OpenFile();
@@ -39,6 +41,8 @@ public slots:
     void sl_setDownAddr();
 private slots:
     void on_cb_model_currentIndexChanged(const QString &arg1);
+    void on_pbn_setup_clicked();
+    void SetModel();
 };
 
 #endif // WIDGET_H

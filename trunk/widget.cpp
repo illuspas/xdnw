@@ -2,6 +2,7 @@
 #include "ui_widget.h"
 
 
+
 Widget::Widget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Widget)
@@ -19,34 +20,7 @@ Widget::Widget(QWidget *parent) :
     connect(ui->pbn_set,SIGNAL(clicked()),this,SLOT(sl_setDownAddr()));
     connect(ui->pbn_about, SIGNAL(clicked()), this, SLOT(sl_about()));
 
-   ui->cb_model->clear();
- QFile file("config.xml");   //建立指向“my.xml”文件的QFile对象
-
-   if (file.open(QIODevice::ReadWrite))
-{
-//将文件内容读到doc中
-       if (!doc->setContent(&file))  {
-           file.close();
-           return;
-       }
-
-
-   file.close();
-   //关闭文件
-   QDomElement root=doc->documentElement();
-   if (root.tagName()=="groups")
-   {
-       QDomNode child=root.firstChild();
-       while (!child.isNull())
-       {
-           if (child.toElement().tagName()=="item")
-           {
-               ui->cb_model->addItem(child.toElement().attribute("name"));
-           }
-           child=child.nextSibling();
-       }
-   }
-   }
+ SetModel();
 
 }
 
@@ -150,7 +124,7 @@ void Widget::sl_OpenState(int state)
 void Widget::sl_about()
 {
     QMessageBox::information(this, tr("About Xdnw"),
-                       tr("<h2>Xdnw 0.5</h2>"
+                       tr("<h2>Xdnw 0.4</h2>"
                           "<p>dnw for Linux"
                           "<br />You must have super user privileges to run it."
                           "<br />Copyright &copy; 2009-2011 illuspas@gmail.com"
@@ -199,5 +173,43 @@ IDPRODUCT=child.toElement().attribute("IDPRODUCT").toUInt(NULL,16);
             }
             child=child.nextSibling();
         }
+    }
+}
+
+void Widget::on_pbn_setup_clicked()
+{
+mo.exec();
+SetModel();
+}
+
+void Widget::SetModel()
+{
+    ui->cb_model->clear();
+  QFile file("config.xml");
+
+    if (file.open(QIODevice::ReadWrite))
+ {
+
+        if (!doc->setContent(&file))  {
+            file.close();
+            return;
+        }
+
+
+    file.close();
+
+    QDomElement root=doc->documentElement();
+    if (root.tagName()=="groups")
+    {
+        QDomNode child=root.firstChild();
+        while (!child.isNull())
+        {
+            if (child.toElement().tagName()=="item")
+            {
+                ui->cb_model->addItem(child.toElement().attribute("name"));
+            }
+            child=child.nextSibling();
+        }
+    }
     }
 }
