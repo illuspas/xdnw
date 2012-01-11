@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<groups>
+    <item down_addr="0x57e00000" IDVENDOR="0x4e8" name="ok6410" IDPRODUCT="0x1234"/>
+    <item down_addr="0xc0000000" IDVENDOR="0x5345" name="Tiny6410" IDPRODUCT="0x1234"/>
+</groups>

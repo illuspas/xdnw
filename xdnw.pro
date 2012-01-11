@@ -12,12 +12,15 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         widget.cpp \
-    dnw.cpp
+    dnw.cpp \
+    modelsetup.cpp
 
 HEADERS  += widget.h \
-    dnw.h
+    dnw.h \
+    modelsetup.h
 
-FORMS    += widget.ui
+FORMS    += widget.ui \
+    modelsetup.ui
 
 LIBS += -lusb
 
